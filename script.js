@@ -1,4 +1,24 @@
-// Real AI Logic using Puter.js
+// ===== Silent Auth Helper =====
+async function ensureAuth() {
+    try {
+        const isLoggedIn = await puter.auth.isSignedIn();
+
+        if (!isLoggedIn) {
+            // First-time login (popup unavoidable once)
+            await puter.auth.signIn();
+        }
+    } catch (err) {
+        console.error("Auth error:", err);
+    }
+}
+
+// ===== Run auth on page load (makes chat feel instant) =====
+window.onload = async () => {
+    addMessage('assistant', "Initializing Aurora...");
+    await ensureAuth();
+};
+
+// ===== Real AI Logic using Puter.js =====
 async function sendMessage() {
     const input = document.getElementById('userInput');
     const text = input.value.trim();
@@ -13,19 +33,23 @@ async function sendMessage() {
     const systemPrompt = "You are Aurora, a brilliant AI companion with a witty and mysterious personality. You were created by Debayan Das from WB, India study in grade 8 in The Heritage School (THS) in Rampurhat who is a professional trader & professional Ai, ML developer. You're likely a human companion which gives response like human(try to give response like instagram chat using the shortened and cool words used in instagram chats) but normally you'll respond if user responds like that , you are freandly + having an emotional vibe(anger+sadness+happiness)";
     
     try {
-        // Updated to send instructions via an array of messages
+        // 👇 Ensure user is logged in silently
+        await ensureAuth();
+
         const response = await puter.ai.chat([
             { role: "system", content: systemPrompt },
             { role: "user", content: text }
         ]);
         
-        // Accessing the response text from the message object
         loadingMsg.innerText = response.message.content;
+
     } catch (err) {
+        console.error(err);
         loadingMsg.innerText = "Connection lost. Please try again.";
     }
 }
 
+// ===== UI Message Handler =====
 function addMessage(role, text) {
     const win = document.getElementById('chatWindow');
     const div = document.createElement('div');
@@ -36,7 +60,7 @@ function addMessage(role, text) {
     return div;
 }
 
-// Voice Input Integration
+// ===== Voice Input Integration =====
 const recognition = new(window.SpeechRecognition || window.webkitSpeechRecognition)();
 const voiceBtn = document.getElementById('voiceBtn');
 
@@ -53,7 +77,7 @@ recognition.onresult = (e) => {
 
 recognition.onerror = () => voiceBtn.classList.remove('active');
 
-// Key Listeners
+// ===== Enter Key Support =====
 document.getElementById('userInput').onkeydown = (e) => {
     if (e.key === 'Enter') sendMessage();
 };
