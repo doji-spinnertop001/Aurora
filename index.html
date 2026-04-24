@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aurora AI | Emerald Edition</title>
+    <script src="https://js.puter.com/v2/"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="sidebar">
+    <div class="logo">✨ Aurora AI</div>
+    <div style="font-size: 0.85rem; color: #668866;">Aurora • Ai powered • agent</div>
+    <button onclick="location.reload()" style="color: #668866; font-size: 0.9rem; margin-top: auto; text-align: left; cursor: pointer; border: none; background: none;">
+        <i class="fas fa-plus-circle"></i> New Conversation
+    </button>
+</div>
+
+<div class="main-chat">
+    <div id="chatWindow">
+        <div class="msg assistant">Yokoso! I'm Aurora, your new Ai companion...</div>
+    </div>
+
+    <div class="input-area">
+        <div class="input-wrapper">
+            <button id="voiceBtn" title="Voice Input"><i class="fas fa-microphone"></i></button>
+            <input type="text" id="userInput" placeholder="Type your message...">
+            <button onclick="sendMessage()"><i class="fas fa-paper-plane"></i></button>
+        </div>
+    </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
